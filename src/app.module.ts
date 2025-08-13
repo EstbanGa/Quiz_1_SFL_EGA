@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://mongodb:sebaseselrey@quiz1.9djwfly.mongodb.net/quiz1?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot(), // carga las variables de .env
+
+    MongooseModule.forRoot(process.env.MONGO_URL!),
+
   ],
   controllers: [AppController],
   providers: [AppService],
