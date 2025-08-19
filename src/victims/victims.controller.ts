@@ -6,6 +6,8 @@ import {
   Param,
   Patch,
   Delete,
+  Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { VictimService } from './victims.service';
 import { UpdateVictimDto } from './dto/update-victim.dto';
@@ -25,6 +27,38 @@ export class VictimController {
     return this.victimService.findAll();
   }
 
+  @Get('search')
+  async getByNameAndFamily(
+    @Query('name') name: string,
+    @Query('family') family: string,
+  ) {
+    const victim = await this.victimService.findByNameAndFamily(name, family);
+    if (!victim) {
+      throw new NotFoundException(
+        'Victim not found with given name and family',
+      );
+    }
+    return victim;
+  }
+
+  @Patch('search')
+  async patchByNameAndFamily(
+    @Query('name') name: string,
+    @Query('family') family: string,
+    @Body() updateDto: UpdateVictimDto,
+  ) {
+    return this.victimService.updateByNameAndFamily(name, family, updateDto);
+  }
+
+  @Delete('search')
+  async deleteByNameAndFamily(
+    @Query('name') name: string,
+    @Query('family') family: string,
+  ) {
+    await this.victimService.deleteByNameAndFamily(name, family);
+    return { message: 'Victim deleted successfully' };
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.victimService.findOne(id);
@@ -36,7 +70,8 @@ export class VictimController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.victimService.remove(id);
+  async remove(@Param('id') id: string) {
+    await this.victimService.remove(id);
+    return { message: 'Victim deleted successfully' };
   }
 }

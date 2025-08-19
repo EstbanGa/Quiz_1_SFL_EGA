@@ -1,4 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateVictimDto } from './create-victim.dto';
-
-export class UpdateVictimDto extends PartialType(CreateVictimDto) {}
+export class UpdateVictimDto {
+  readonly name?: string;
+  readonly age?: number;
+  readonly family?: string;
+  readonly murderMethod?: string;
+}

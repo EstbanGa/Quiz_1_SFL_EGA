@@ -8,17 +8,17 @@ export class Victim {
   @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   age: number;
 
-  @Prop()
+  @Prop({ required: true })
   family: string;
 
-  @Prop()
+  @Prop({ required: true })
   murderMethod: string;
 
-  @Prop()
-  caseId: string;
+  @Prop({ required: false })
+  caseId?: string;
 }
 
 export const VictimSchema = SchemaFactory.createForClass(Victim);

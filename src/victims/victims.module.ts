@@ -10,5 +10,6 @@ import { VictimController } from './victims.controller';
   ],
   controllers: [VictimController],
   providers: [VictimService],
+  exports: [MongooseModule],
 })
 export class VictimModule {}

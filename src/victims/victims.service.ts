@@ -44,4 +44,38 @@ export class VictimService {
     }
     return deletedVictim;
   }
+
+  async findByNameAndFamily(
+    name: string,
+    family: string,
+  ): Promise<Victim | null> {
+    return this.victimModel.findOne({ name, family }).exec();
+  }
+
+  async updateByNameAndFamily(
+    name: string,
+    family: string,
+    updateDto: UpdateVictimDto,
+  ): Promise<Victim> {
+    const victim = await this.victimModel.findOneAndUpdate(
+      { name, family },
+      updateDto,
+      { new: true },
+    );
+    if (!victim) {
+      throw new NotFoundException(
+        'Victim not found with given name and family',
+      );
+    }
+    return victim;
+  }
+
+  async deleteByNameAndFamily(name: string, family: string): Promise<void> {
+    const result = await this.victimModel.deleteOne({ name, family }).exec();
+    if (result.deletedCount === 0) {
+      throw new NotFoundException(
+        'Victim not found with given name and family',
+      );
+    }
+  }
 }
