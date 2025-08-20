@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type VictimDocument = Victim & Document;
 
@@ -17,8 +17,8 @@ export class Victim {
   @Prop({ required: true })
   murderMethod: string;
 
-  @Prop({ required: false })
-  caseId?: string;
+  @Prop({ type: Types.ObjectId, ref: 'Case', required: false })
+  caseId?: Types.ObjectId;
 }
 
 export const VictimSchema = SchemaFactory.createForClass(Victim);
